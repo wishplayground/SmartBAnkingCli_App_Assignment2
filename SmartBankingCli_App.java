@@ -19,7 +19,8 @@ class SmartBankingCli_App{
         
         String screen = Dashboard;
         String name;
-        String initdeposit;
+        String initdeposit = "";
+        String id;
 
         //Arrays
         String[][] customers = new String[][] {{"SDB-0001","amal","7000"},{"SDB-0002","wimal","7500"},{"SDB-0003","amal","80000"}};
@@ -64,20 +65,20 @@ class SmartBankingCli_App{
                     //Generate Acc number
                     boolean validName = false;
                     int x = 1, initDepo;
-                    String id,accName;
+    
                     loop_name:
                     while(true){
                         id = String.format("SDB-%05d",x);
                         System.out.printf("New Account number => %s%s%s\n",Purple,id,reset);
                         System.out.print("Enter name: ");
-                        accName = scanner.nextLine().strip();
+                        name = scanner.nextLine().strip();
                         //name validation
-                        if(accName.isBlank()) {
+                        if(name.isBlank()) {
                             System.out.println("Name cannot be Empty. Try Again");
                             continue;
                         }else{
-                            for (int i = 0; i < accName.length() ; i++) {
-                                if(!(Character.isLetter(accName.toLowerCase().charAt(i)) || accName.charAt(i) == ' ')) {
+                            for (int i = 0; i < name.length() ; i++) {
+                                if(!(Character.isLetter(name.toLowerCase().charAt(i)) || name.charAt(i) == ' ')) {
                                     System.out.print("Invalid Name. Do you want Enter a valid name? (Y/N) >> ");
                                     if(scanner.nextLine().strip().toUpperCase().equals("Y")) continue loop_name;
                                     screen = Dashboard;
@@ -97,14 +98,22 @@ class SmartBankingCli_App{
                                 else screen = Dashboard; break loop_name;
                                 
                             }else{
-                                System.out.printf("Account number %s%s%s of %s\033[1;30m%s%s has been created\n",Yellow,id,reset,GREEN_BACKGROUND,accName.toUpperCase(),reset);
+                                System.out.printf("Account number %s%s%s of %s\033[1;30m%s%s has been created\n",Yellow,id,reset,GREEN_BACKGROUND,name.toUpperCase(),reset);
                                 initdeposit += initDepo;
                                 break;
                             }
                         }while(true);
                         //Names Store in a array
                         
-                        
+                        String[][] newcustomer = new String[customers.length + 1][3];
+                        for (int i = 0; i < customers.length; i++) {
+                            newcustomer[i] = customers[i];
+                        }
+                        newcustomer[newcustomer.length - 1][0] = id; 
+                        newcustomer[newcustomer.length - 1][1] = name; 
+                        newcustomer[newcustomer.length - 1][2] = initdeposit; 
+                        customers = newcustomer;
+
                     }
                     
                 case Deposit_Money:
@@ -128,7 +137,7 @@ class SmartBankingCli_App{
                             }
                         }
                         //check exist
-                        int accIndex=0;
+                        /*int accIndex=0;
                         for (int i = 0; i < AccId.length; i++) {
                             if(accNum == AccId[i] ) exist = true;accIndex = i;
                         }
@@ -138,7 +147,7 @@ class SmartBankingCli_App{
                             else screen = Dashboard; break loop_DepoMoney;
                         }
 
-                        System.out.printf("Welcome %s \n Current Balance is:Rs%,d.00",names[accIndex],initialDepo);
+                        System.out.printf("Welcome %s \n Current Balance is:Rs%,d.00",names[accIndex],initialDepo);*/
                     
                     }while(true);
 
